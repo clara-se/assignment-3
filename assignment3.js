@@ -16,7 +16,7 @@ tasks.forEach((input,index) =>{
 })
 
 function addTask() {
-    const text = new_task.value.trim(); // we trim to remove any blank space,
+    const text = task_input.value.trim(); // we trim to remove any blank space,
     if (text === '') {
     alert('Task cannot be empty!');
     return;
@@ -27,7 +27,16 @@ function addTask() {
     completed: false
   }; // this is my tasks elements
     tasks.push(task);//added it to my list of task in the array
-    new_task.value = ''; //clear the textarea back to empty
+    task_input.value = ''; //clear the textarea back to empty
     renderTasks();// re-erase everything inside so we dont duplicate when we add a new one the old elemnets
 }
+
+const addButton = document.querySelector('.add_task button');//class in html
+addButton.addEventListener('click', addTask); //event listener
+task_input.addEventListener('keydown', (event) => {
+      if (event.key === 'Enter') {
+            event.preventDefault(); //to not insert a new line and be able to use the add Task function
+            addTask();
+  }
+});
 
