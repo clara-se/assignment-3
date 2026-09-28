@@ -37,7 +37,7 @@ function renderTasks() { // to avoid duplicates
         inputs.type="checkbox";
         inputs.checked = task.completed; //added this so the checkbox shows the saved state (true/false)
         const span=document.createElement('span');
-        span.textContent=task.text; // CHANGED: task.text
+        span.textContent=task.text;
         const deleteb=document.createElement('button');
         deleteb.textContent='x';
         // we need:<button class="delete-btn">x</button> and classList <=> class=""
