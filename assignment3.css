@@ -8,7 +8,7 @@
   --accent: #49111C;
   --border: #A9927D;
   --muted: #5E503F;
-
+  --error: #B3261E; /* added this color for the error */
 }
 
 body {
@@ -32,7 +32,7 @@ header {
   display: flex;
   align-items: center;
   gap: 12px;
-  margin-bottom: 24px;
+  margin-bottom: 8px; /*was 24px, the error message now sits right under the input and carries the space below */
 }
 
 .add_task label { 
@@ -42,7 +42,7 @@ header {
 }
 
 #task_input { /* for everything with the id task_input */
-  flex: 1;                       /* takes all the free space in the row */
+  flex: 1;    /* takes all the free space in the row */
   height: 44px;
   padding: 10px 12px;
   border: 1px solid var(--border);
@@ -75,9 +75,17 @@ header {
   background: var(--text);
 }
 
+/* error message under the input ( to replace the alert popup) */
+#error_message {
+  color: var(--error);
+  font-size: 0.9rem;
+  min-height: 1.2em; /* reserves the space so the list doesn't jump down when the message appears */
+  margin: 0 0 16px;
+}
+
 /* styling the list of tasks */
 #task_list {
-  list-style: none;              /* no bullets  cause with ul we have bullets */
+  list-style: none;  /* no bullets  cause with ul we have bullets */
   padding: 0;
   margin: 0;
 }
@@ -88,6 +96,14 @@ header {
   gap: 12px;
   padding: 12px;
   border-bottom: 1px solid var(--border);
+}
+
+/* message shown when there are no tasks */
+#task_list .empty-message {      /* written with #task_list in front so it wins over the "#task_list li" rule above */
+  justify-content: center;       /* centers the text in the flex row */
+  color: var(--muted);
+  border-bottom: none;
+  padding: 32px 12px;
 }
 
 /* styling the checkbox */
@@ -139,4 +155,3 @@ header {
     opacity: 1;
   }
 }
-
