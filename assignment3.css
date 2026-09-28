@@ -107,3 +107,36 @@ header {
   box-shadow: inset 0 0 0 3px var(--bg);   /* light ring inside = a "dot" look */
 }
 
+/* completed task */
+.completed span {
+  text-decoration: line-through;
+  color: var(--muted);
+}
+
+/* delete button */
+.delete-btn {
+  margin-left: auto;             /* pushes it to the far right of the row so its not glued on the text*/
+  background: none;
+  border: none;
+  color: var(--muted);
+  font-size: 1.1rem;
+  cursor: pointer;
+  opacity: 0;                    /* hidden until we put cursor on the row to show it */
+  transition: opacity 0.15s, color 0.15s;
+}
+
+#task_list li:hover .delete-btn,
+.delete-btn:focus-visible {      /* also visible when reached with the keyboard */
+  opacity: 1;
+}
+
+.delete-btn:hover {
+  color: var(--accent);
+}
+
+@media (hover: none) {           /* adapt to phones since they have no hover, so  we show it */
+  .delete-btn {
+    opacity: 1;
+  }
+}
+
