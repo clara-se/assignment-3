@@ -29,14 +29,15 @@ function loadTasks() {
 function renderTasks() { // to avoid duplicates
     task_list.innerHTML = ''; //erase everything inside the <ul> with the id task list 
 
-    tasks.forEach((tasks) =>{
+    tasks.forEach((task) =>{ 
         const list=document.createElement('li'); // li is a tab so we u create he will know that u mean to create <li>
         //list.textContent=input.text
         //replaced that list only have a textbox input so il will be composed of a checkbox, the text and a delete button
         const inputs=document.createElement('input');
         inputs.type="checkbox";
+        inputs.checked = task.completed; //added this so the checkbox shows the saved state (true/false)
         const span=document.createElement('span');
-        span.textContent=tasks.text;
+        span.textContent=task.text; // CHANGED: task.text
         const deleteb=document.createElement('button');
         deleteb.textContent='x';
         // we need:<button class="delete-btn">x</button> and classList <=> class=""
@@ -50,7 +51,6 @@ function renderTasks() { // to avoid duplicates
         list.append(inputs, span, deleteb); // added in li checkbox, text and delete button
     })
 }
-
 function addTask() {
     const text = task_input.value.trim(); // we trim to remove any blank space,
     if (text === '') {
@@ -87,6 +87,19 @@ function deleteTask(id) {
     renderTasks();
 }
 
+// add one listener on the list o will know when to delete or say its completed
+task_list.addEventListener('click', (event) => {
+    const li = event.target.closest('li'); // find the <li> that contains whatever was clicked
+    if (!li) return; // click landed on empty space in the <ul>
+    const id = Number(li.dataset.id); // dataset values are strings, ids in the array are numbers
+
+    if (event.target.classList.contains('delete-btn')) { // found class="delete btn"
+        deleteTask(id);
+    } else if (event.target.type === 'checkbox') { // found the checkbox we added means it was completed
+        toggleTask(id);
+    }
+});
+
 const addButton = document.querySelector('.add_task button');//class in html
 addButton.addEventListener('click', addTask); //event listener
 task_input.addEventListener('keydown', (event) => {
@@ -96,5 +109,5 @@ task_input.addEventListener('keydown', (event) => {
   }
 });
 
-renderTasks(); // initial render so the two hardcoded tasks show up when the page loads
+renderTasks(); // initial render so saved tasks show up when the page loads
 
