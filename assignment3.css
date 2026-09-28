@@ -75,3 +75,35 @@ header {
   background: var(--text);
 }
 
+/* styling the list of tasks */
+#task_list {
+  list-style: none;              /* no bullets  cause with ul we have bullets */
+  padding: 0;
+  margin: 0;
+}
+
+#task_list li {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px;
+  border-bottom: 1px solid var(--border);
+}
+
+/* styling the checkbox */
+#task_list input[type="checkbox"] {
+  appearance: none;              /* removes the browser's square box */
+  flex-shrink: 0;                /* never gets squished by long text */
+  width: 18px;
+  height: 18px;
+  border: 2px solid var(--border);
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+#task_list input[type="checkbox"]:checked {
+  background: var(--accent);
+  border-color: var(--accent);
+  box-shadow: inset 0 0 0 3px var(--bg);   /* light ring inside = a "dot" look */
+}
+
