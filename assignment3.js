@@ -9,11 +9,25 @@ const task_input=document.getElementById('task_input');
 function renderTasks() { // to avoid duplicates
     task_list.innerHTML = ''; //erase everything inside the <ul> with the id task list 
 
-    tasks.forEach((input,index) =>{
+    tasks.forEach((tasks) =>{
         const list=document.createElement('li'); // li is a tab so we u create he will know that u mean to create <li>
-        list.textContent=input.text
-        list.dataset.index = index; // save index for each element
+        //list.textContent=input.text
+        //replaced that list only have a textbox input so il will be composed of a checkbox, the text and a delete button
+        const inputs=document.createElement('input');
+        inputs.type="checkbox";
+        const span=document.createElement('span');
+        span.textContent=tasks.text;
+        const deleteb=document.createElement('button');
+        deleteb.textContent='x';
+        // we need:<button class="delete-btn">x</button> and classList <=> class=""
+        deleteb.classList.add('delete-btn'); // to let the listener recognize the delete button
+        //list.dataset.index = index; // save index for each element
+        list.dataset.id = task.id; //id instead of index cause when we delete smth id dont shift
+        if (task.completed) {
+            list.classList.add('completed'); // edit css
+        }
         task_list.append(list); // so its like adding to div
+        list.append(inputs, span, deleteb); // added in li checkbox, text and delete button
     })
 }
 
@@ -22,7 +36,7 @@ function addTask() {
     if (text === '') {
     alert('Task cannot be empty!');
     return;
-  } //check if my text is empty after checking for the spaces ad removing them
+  } //check if my text is empty after checking for the spaces after removing them or if i didnt input anything
     const task = {
     id: Date.now(),
     text: text,
@@ -43,3 +57,4 @@ task_input.addEventListener('keydown', (event) => {
 });
 
 renderTasks(); // initial render so the two hardcoded tasks show up when the page loads
+
