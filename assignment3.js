@@ -10,6 +10,7 @@ let tasks = loadTasks();
 
 const task_list=document.getElementById('task_list'); 
 const task_input=document.getElementById('task_input');
+const error_message=document.getElementById('error_message'); //add this for the <p> under the input where the error text will appear
 
 //add a function so it will save tasks, so when we delete only task saved kept
 function saveTasks() {
@@ -28,6 +29,15 @@ function loadTasks() {
 
 function renderTasks() { // to avoid duplicates
     task_list.innerHTML = ''; //erase everything inside the <ul> with the id task list 
+
+    //if there are no tasks, show a message instead of a blank space
+    if (tasks.length === 0) {
+        const empty = document.createElement('li');
+        empty.textContent = 'No tasks yet. Add one above!';
+        empty.classList.add('empty-message'); // lets the css style it
+        task_list.append(empty);
+        return; // stop here, so the forEach below doesn't run
+    }
 
     tasks.forEach((task) =>{ 
         const list=document.createElement('li'); // li is a tab so we u create he will know that u mean to create <li>
@@ -54,7 +64,8 @@ function renderTasks() { // to avoid duplicates
 function addTask() {
     const text = task_input.value.trim(); // we trim to remove any blank space,
     if (text === '') {
-    alert('Task cannot be empty!');
+    //alert('Task cannot be empty!');
+    error_message.textContent = 'Task cannot be empty!'; //shows the message on the page instead of alert()
     return;
   } //check if my text is empty after checking for the spaces after removing them or if i didnt input anything
     const task = {
@@ -64,8 +75,10 @@ function addTask() {
   }; // this is my tasks elements
     tasks.push(task);//added it to my list of task in the array
     task_input.value = ''; //clear the textarea back to empty
+    error_message.textContent = ''; //the task was valid, so remove any old error
     saveTasks(); // added this line to save after every change
     renderTasks();// re-erase everything inside and rebuild it, so it includes the new task too
+    task_input.focus(); //cursor goes back in the input, ready for the next task
 }
 
 //function for completed tasks
@@ -109,5 +122,9 @@ task_input.addEventListener('keydown', (event) => {
   }
 });
 
-renderTasks(); // initial render so saved tasks show up when the page loads
+//the "input" event fires on every keystroke, so the error disappears as soon as the user starts typing again
+task_input.addEventListener('input', () => {
+    error_message.textContent = '';
+});
 
+renderTasks(); // initial render so saved tasks show up when the page loads
