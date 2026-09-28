@@ -1,10 +1,30 @@
-const tasks = [
-  { id: 1, text: "Buy groceries", completed: false },
-  { id: 2, text: "Finish assignment", completed: false }
-]; //created an array of task that is known with an id, what is the task and if its completed
+//const tasks = [
+//  { id: 1, text: "Buy groceries", completed: false },
+//  { id: 2, text: "Finish assignment", completed: false }
+//]; //created an array of task that is known with an id, what is the task and if its completed
+
+// replace that format with:
+let tasks = loadTasks();
+// we use let instead of const because toggle and delete will replace the array, and it now loads from localStorage so empty first
+
 
 const task_list=document.getElementById('task_list'); 
 const task_input=document.getElementById('task_input');
+
+//add a function so it will save tasks, so when we delete only task saved kept
+function saveTasks() {
+    localStorage.setItem('tasks', JSON.stringify(tasks)); // localStorage stores just strings, to do that we converted the array with JSON
+}
+
+//function that loads the tasks saved
+function loadTasks() {
+    try {
+        const saved = localStorage.getItem('tasks');
+        return saved ? JSON.parse(saved) : []; // nothing saved yet , will have empty array
+    } catch {
+        return []; // we put that in case the saved data is corrupted so it start fresh instead of crashing
+    }
+}
 
 function renderTasks() { // to avoid duplicates
     task_list.innerHTML = ''; //erase everything inside the <ul> with the id task list 
@@ -44,7 +64,27 @@ function addTask() {
   }; // this is my tasks elements
     tasks.push(task);//added it to my list of task in the array
     task_input.value = ''; //clear the textarea back to empty
+    saveTasks(); // added this line to save after every change
     renderTasks();// re-erase everything inside and rebuild it, so it includes the new task too
+}
+
+//function for completed tasks
+function toggleTask(id) {
+    tasks = tasks.map((task) => { //  create a new array tasks , where now will have the task that has been completed
+        if (task.id === id) { // if the id of the task is the id given so the task is completed
+            return { ...task, completed: !task.completed }; 
+        }
+        return task; // leave the other tasks the same
+    });
+    saveTasks();
+    renderTasks();
+}
+
+//function for deleted tasks
+function deleteTask(id) {
+    tasks = tasks.filter((task) => task.id !== id); //on a new array will remove the task with the id and keep them, cause gonna fetch every element that has an id different than the one we input
+    saveTasks();
+    renderTasks();
 }
 
 const addButton = document.querySelector('.add_task button');//class in html
