@@ -7,10 +7,10 @@
 let tasks = loadTasks();
 // we use let instead of const because toggle and delete will replace the array, and it now loads from localStorage so empty first
 
-
 const task_list=document.getElementById('task_list'); 
 const task_input=document.getElementById('task_input');
 const error_message=document.getElementById('error_message'); //add this for the <p> under the input where the error text will appear
+const label = document.getElementById('progress'); //add this to see the progress
 
 //add a function so it will save tasks, so when we delete only task saved kept
 function saveTasks() {
@@ -21,14 +21,19 @@ function saveTasks() {
 function loadTasks() {
     try {
         const saved = localStorage.getItem('tasks');
-        return saved ? JSON.parse(saved) : []; // nothing saved yet , will have empty array
+        return saved ? JSON.parse(saved) : []; // will have empty array if we dont find what saved and if it caches an error will be able to catch it
     } catch {
-        return []; // we put that in case the saved data is corrupted so it start fresh instead of crashing
+        return []; // in case the saved data is corrupted so it start fresh instead of crashing
     }
 }
 
 function renderTasks() { // to avoid duplicates
     task_list.innerHTML = ''; //erase everything inside the <ul> with the id task list 
+
+    //reduce function
+    const doneCount= tasks.reduce((count,t)=>t.completed ? count + 1 : count,0);
+    label.textContent = tasks.length === 0 ? '' : `${doneCount} out of ${tasks.length} done`;
+
 
     //if there are no tasks, show a message instead of a blank space
     if (tasks.length === 0) {
@@ -128,3 +133,4 @@ task_input.addEventListener('input', () => {
 });
 
 renderTasks(); // initial render so saved tasks show up when the page loads
+
